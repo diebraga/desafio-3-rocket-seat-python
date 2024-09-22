@@ -1,0 +1,50 @@
+# Environnement virtuel
+venv/
+ENV/
+*.pyc
+__pycache__/
+
+# Configurations locales
+instance/
+*.py[cod]
+*.sqlite3
+.env
+
+# Logs
+*.log
+*.pid
+*.pot
+*.log.*
+*.out
+
+# Cache et fichiers temporaires
+.cache/
+*.swp
+*.swo
+*.DS_Store
+*.egg-info/
+
+# Pytest, Coverage, et fichiers de test
+.coverage
+htmlcov/
+.tox/
+nosetests.xml
+coverage.xml
+*.cover
+
+# Outils IDE/Editeur (exemple avec VSCode et PyCharm)
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Node.js (si ton projet inclut du JavaScript avec Flask)
+node_modules/
+npm-debug.log
+
+# Docker (si applicable)
+docker-compose.yml
+Dockerfile
+
+# Dépendances Python compilées
+*.so
