@@ -1,6 +1,14 @@
 from flask import Flask, jsonify, Response
-  
+from repository.db import db
+from sqlalchemy import inspect
+from db_models.payment import Payment
+
 app = Flask(__name__)
+
+# start db 
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.db"
+app.config["SECRET_KEY"] = "SECRET_KEY_WEBSOCKET"
+db.init_app(app)
 
 @app.route("/payments/pix", methods=["POST"])
 def create_payment_pix() -> Response:
