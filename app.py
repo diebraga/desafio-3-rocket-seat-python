@@ -1,7 +1,8 @@
-from flask import Flask, jsonify, Response
+from flask import Flask, jsonify, Response, request
 from repository.db import db
 from sqlalchemy import inspect
 from db_models.payment import Payment
+from datetime import datetime, timedelta
 
 app = Flask(__name__)
 
@@ -20,7 +21,32 @@ def create_payment_pix() -> Response:
     Returns:
         Response: La réponse HTTP après la création du paiement.
     """
-    return jsonify({ "message": "The payment has been cretated" })
+    data: Payment = request.get_json()
+
+    if "value" not in data:
+        return jsonify({ "message": "Value is required!" }), 404
+    # Si expire_date est présent, le convertir en objet datetime
+    expire_date_str = data.get("expire_date", None)
+
+    if expire_date_str:
+        try:
+            expire_date = datetime.fromisoformat(expire_date_str)
+        except ValueError:
+            return jsonify({"message": "Invalid date format for expire_date!"}), 400
+    else:
+        expire_date = datetime.utcnow()  # Utiliser la date actuelle si expire_date n'est pas fourni
+
+    expiration_date = datetime.now() + timedelta(minutes=30)
+
+    new_payment = Payment(
+        value=data["value"],
+    )
+    print(new_payment)
+
+    db.session.add(new_payment)
+    db.session.commit()
+
+    return jsonify({ "message": "The payment has been cretated", "payment": new_payment.to_dict() })
 
 
 @app.route("/payments/pix/confirmation", methods=["POST"])
